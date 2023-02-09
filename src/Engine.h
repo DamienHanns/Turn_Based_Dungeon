@@ -7,15 +7,28 @@
 
 #include <SDL2/SDL.h>
 #include "Settings.h"
+#include "Time.h"
 
 class Engine {
 private:
     bool _bIsRunning = false;
 
     Settings* _settings = new Settings;
+    const int TIME_BETWEEN_FRAMES = 1000 / _settings -> frameRateCap;
+    int _nextFrameTime = -1.0f;
+
+    Time time;
 
     SDL_Window* _window;
     SDL_Renderer* _renderer;
+
+    struct testObject{
+        float posX = 20.0f;
+        float posY = 20.0f;
+
+        SDL_Rect testObjectRect {20, 20, 20, 20};
+    } _testObject;
+
 
     void processInput();
     void update();
@@ -24,7 +37,7 @@ private:
 
 public:
     void setup();
-    void run();
+    void loop();
 };
 
 

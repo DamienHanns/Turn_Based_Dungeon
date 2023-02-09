@@ -13,5 +13,5 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp")
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Turn_Based_Dungeon_v02 ${SOURCES} src/Engine.cpp src/Engine.h src/Settings.h)
+add_executable(Turn_Based_Dungeon_v02 ${SOURCES} src/Engine.cpp src/Engine.h src/Settings.h src/Time.h)
 target_link_libraries(Turn_Based_Dungeon_v02 ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

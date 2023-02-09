@@ -5,7 +5,9 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include "Engine.h"
+#include "Time.h"
 
+//Create basic elements for Engine and Game.
 void Engine::setup() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
         std::cerr << "SDL Init Failed" << std::endl;
@@ -21,7 +23,7 @@ void Engine::setup() {
     //needs SDL_WINDOW_RESIZABLE - NOT SDL_WINDOW_FULLSCREEN - or errors with no display.
     //full screen set after.
     _window = SDL_CreateWindow(
-            NULL,
+            nullptr,
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             windowW, windowH,
             _settings->_bFullScreen ? SDL_WINDOW_RESIZABLE : SDL_WINDOW_BORDERLESS
@@ -36,8 +38,8 @@ void Engine::setup() {
 
     _renderer = SDL_CreateRenderer(_window,
                                    -1,
-                                   _settings -> _bEnableVSync ? SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-                                   : SDL_RENDERER_ACCELERATED
+                                   _settings -> _bEnableVSync ?
+                                   SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC : SDL_RENDERER_ACCELERATED
                                    );
     if (!_renderer){
         std::cerr << "renderer creation FAILED" << std::endl;
@@ -47,14 +49,21 @@ void Engine::setup() {
     _bIsRunning = true;
 }
 
-void Engine::run() {
+//if basic setup done, run game loop.
+//game FPS capped - additional sleep/delay functions not implemented.
+void Engine::loop() {
     if (!_bIsRunning) {
-        std::cerr << " engine NOT SETUP to run" << std::endl;
+        std::cerr << " engine NOT SETUP to loop" << std::endl;
         return;
     }
 
     while(_bIsRunning)
     {
+        if  (Time::getTimeRaw() <= _nextFrameTime) { continue;}
+
+        time.updateTime();
+        _nextFrameTime = Time::getTimeRaw() + TIME_BETWEEN_FRAMES;
+
         processInput();
         update();
         render();
@@ -63,6 +72,8 @@ void Engine::run() {
     destroy();
 }
 
+
+//easy exit functionality
 void Engine::processInput() {
     SDL_Event inputEvent;
     while (SDL_PollEvent(&inputEvent)){
@@ -81,8 +92,13 @@ void Engine::processInput() {
     }
 }
 
-void Engine::update() {
+//testing functions and APIs.
+//a lot of this to be moved into systems and components later
 
+void Engine::update() {
+    _testObject.posX += 10 * Time::getDelta();
+
+    _testObject.testObjectRect.x = (int)_testObject.posX;
 }
 
 void Engine::render() {
@@ -90,9 +106,8 @@ void Engine::render() {
     SDL_RenderClear(_renderer);
 
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-    SDL_Rect testObject {100, 100, 200, 200};
+    SDL_RenderFillRect(_renderer, &_testObject.testObjectRect);
 
-    SDL_RenderFillRect(_renderer, &testObject);
     SDL_RenderPresent(_renderer);
 }
 

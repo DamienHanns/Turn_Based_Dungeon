@@ -8,7 +8,7 @@ int main() {
     Engine engine;
     engine.setup();
 
-    engine.run();
+    engine.loop();
     std::cout << "Hello, World!  " << std::endl;
     return 0;
 }

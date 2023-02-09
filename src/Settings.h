@@ -14,9 +14,11 @@ struct Settings{
     int _windowSizeY =  600;
     bool _maxResolution = false;
 
-    bool _bFullScreen = true;
+    bool _bFullScreen = false;
 
     bool _bEnableVSync = false;
+
+    const int frameRateCap = 20;
 };
 
 
