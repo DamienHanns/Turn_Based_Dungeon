@@ -32,7 +32,7 @@ public:
 
     int getTimeLastTick () { return _timeLastTick; }
 
-    inline static float getCurrentTime() { return  SDL_GetTicks() / 1000; }
+    inline static float getCurrentTime() { return  (float)SDL_GetTicks() / 1000; }
 
     inline static float getTimeRaw() {  return SDL_GetTicks(); }
 

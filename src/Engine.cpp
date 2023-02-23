@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include "Engine.h"
 #include "Time.h"
+#include "Log.h"
 
 //Create basic elements for Engine and Game.
 void Engine::setup() {
@@ -47,6 +48,7 @@ void Engine::setup() {
     }
 
     _bIsRunning = true;
+
 }
 
 //if basic setup done, run game loop.
@@ -59,7 +61,7 @@ void Engine::loop() {
 
     while(_bIsRunning)
     {
-        if  (Time::getTimeRaw() <= _nextFrameTime) { continue;}
+      if  (Time::getTimeRaw() < _nextFrameTime) { continue;}
 
         time.updateTime();
         _nextFrameTime = Time::getTimeRaw() + TIME_BETWEEN_FRAMES;
@@ -71,7 +73,6 @@ void Engine::loop() {
 
     destroy();
 }
-
 
 //easy exit functionality
 void Engine::processInput() {
@@ -93,7 +94,7 @@ void Engine::processInput() {
 }
 
 //testing functions and APIs.
-//a lot of this to be moved into systems and components later
+//a lot of this to be moved into systemsMap and components later
 
 void Engine::update() {
     _testObject.posX += 10 * Time::getDelta();
@@ -116,5 +117,4 @@ void Engine::destroy() {
     SDL_DestroyWindow(_window);
     SDL_Quit();
 }
-
 
